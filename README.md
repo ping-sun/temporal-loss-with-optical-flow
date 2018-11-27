@@ -7,9 +7,9 @@
 
 | <div align=center>forward_(t-1)-t | <div align=center>image | <div align=center>backward_t-(t-1) |
 |-------|:---|-------:|
-| |<div align=center>![](image/org/0000.png){:width="80%"}|<div align=center> ![](image/flow-vis/backward_1_0.png){: width="80%"}|
-|<div align=center>![](image/flow-vis/forward_0_1.png){:width="80%"}|<div align=center>![](image/org/0001.png){:width="80%"}|<div align=center> ![](image/flow-vis/backward_2_1.png){: width="80%"}|
-|<div align=center>![](image/flow-vis/forward_1_2.png){:width="80%"} |<div align=center>![](image/org/0002.png){:width="80%"}| |    
+| |<div align=center>![](image/org/0000.png)|<div align=center> ![](image/flow-vis/backward_1_0.png)|
+|<div align=center>![](image/flow-vis/forward_0_1.png)|<div align=center>![](image/org/0001.png)|<div align=center> ![](image/flow-vis/backward_2_1.png)|
+|<div align=center>![](image/flow-vis/forward_1_2.png)|<div align=center>![](image/org/0002.png)| |    
 
 
 * 计算条件：
@@ -37,10 +37,10 @@
     计算结果为.flo文件，文件储存较大，可以用pickle进行压缩
 
 
-#####2. warp函数
-[numpy](https://blog.csdn.net/sigai_csdn/article/details/80664481)
-[pytorch-cpu](https://blog.csdn.net/sigai_csdn/article/details/80664481)
-[pytorch-cuda](https://blog.csdn.net/sigai_csdn/article/details/80664481)
+##### 2. warp函数
+[numpy](https://github.com/SpONA/temporal-loss-with-optical-flow/blob/master/utils/warp_numpy.py)
+[pytorch-cpu](https://github.com/SpONA/temporal-loss-with-optical-flow/blob/master/utils/warp_torch_cpu.py）
+[pytorch-cuda](https://github.com/SpONA/temporal-loss-with-optical-flow/blob/master/utils/warp_torch_cuda.py)
 
 核心思想：
     光流存储的是两张图之间的位移大小，利用`grid_new = grid_old + flow`计算原图中某个像素对应到新图中的坐标位置
@@ -57,9 +57,8 @@
 
 也可以反过来做，即`getwarp(flow2, flow1, cur)`的输出是`warp_prev`
 
-numpy版本和pytorch版本代码位置：
 
-#####3. 光流的augmentation
+##### 3. 光流的augmentation
 
 - **resize**:
     
@@ -107,13 +106,13 @@ numpy版本和pytorch版本代码位置：
 
 | |<div align=center>prev | <div align=center>warp_prev | <div align=center>warp_cur |<div align=center>cur |
 |---|:----:|:---:|:---:|-------:|
-|<div align=center>origin|<div align=center>![](image/org/0000.png){:width="80%"}|<div align=center> ![](image/warp/warp_from_cur_to_prev.png){: width="80%"}|<div align=center> ![](image/warp/warp_from_prev_to_cur.png){: width="80%"}|<div align=center> ![](image/org/0001.png){: width="80%"}|
-|<div align=center>flip|<div align=center>![](image/warp/flip_prev.png){:width="80%"}|<div align=center> ![](image/warp/flip_from_cur_to_prev.png){: width="80%"}|<div align=center> ![](image/warp/flip_from_prev_to_cur.png){: width="80%"}|<div align=center> ![](image/warp/flip_cur.png){: width="80%"}|
-|<div align=center>resize|<div align=center>![](image/warp/resize_prev.png){:width="80%"}|<div align=center> ![](image/warp/resize_from_cur_to_prev.png){: width="80%"}|<div align=center> ![](image/warp/resize_from_prev_to_cur.png){: width="80%"}|<div align=center> ![](image/warp/resize_cur.png){: width="80%"}|
-|<div align=center>rotate|<div align=center>![](image/warp/rotate_prev.png){:width="80%"}|<div align=center> ![](image/warp/rotate_from_cur_to_prev.png){: width="80%"}|<div align=center> ![](image/warp/rotate_from_prev_to_cur.png){: width="80%"}|<div align=center> ![](image/warp/rotate_cur.png){: width="80%"}|
-|<div align=center>crop|<div align=center>![](image/warp/crop_prev.png){:width="80%"}|<div align=center> ![](image/warp/crop_from_cur_to_prev.png){: width="80%"}|<div align=center> ![](image/warp/crop_from_prev_to_cur.png){: width="80%"}|<div align=center> ![](image/warp/crop_cur.png){: width="80%"}|
-|<div align=center>label|<div align=center>![](image/label-warped/0000.png){:width="80%"}|<div align=center> ![](image/label-warped/warp_from_cur_to_prev.png){: width="80%"}|<div align=center> ![](image/label-warped/warp_from_prev_to_cur.png){: width="80%"}|<div align=center> ![](image/label-warped/0001.png){: width="80%"}|
-|<div align=center>label_flip|<div align=center>![](image/label-warped/flip_prev.png){:width="80%"}|<div align=center> ![](image/label-warped/flip_from_cur_to_prev.png){: width="80%"}|<div align=center> ![](image/label-warped/flip_from_prev_to_cur.png){: width="80%"}|<div align=center> ![](image/label-warped/flip_cur.png){: width="80%"}|
-|<div align=center>label_resize|<div align=center>![](image/label-warped/resize_prev_.png){:width="80%"}|<div align=center> ![](image/label-warped/resize_from_cur_to_prev.png){: width="80%"}|<div align=center> ![](image/label-warped/resize_from_prev_to_cur.png){: width="80%"}|<div align=center> ![](image/label-warped/resize_cur_.png){: width="80%"}|
-|<div align=center>label_rotate|<div align=center>![](image/label-warped/rotate_prev.png){:width="80%"}|<div align=center> ![](image/label-warped/rotate_from_cur_to_prev.png){: width="80%"}|<div align=center> ![](image/label-warped/rotate_from_prev_to_cur.png){: width="80%"}|<div align=center> ![](image/label-warped/rotate_cur.png){: width="80%"}|
-|<div align=center>label_crop|<div align=center>![](image/label-warped/crop_prev.png){:width="80%"}|<div align=center> ![](image/label-warped/crop_from_cur_to_prev.png){: width="80%"}|<div align=center> ![](image/label-warped/crop_from_prev_to_cur.png){: width="80%"}|<div align=center> ![](image/label-warped/crop_cur.png){: width="80%"}|
+|<div align=center>origin|<div align=center>![](image/org/0000.png)|<div align=center> ![](image/warp/warp_from_cur_to_prev.png)|<div align=center> ![](image/warp/warp_from_prev_to_cur.png)|<div align=center> ![](image/org/0001.png)|
+|<div align=center>flip|<div align=center>![](image/warp/flip_prev.png)|<div align=center> ![](image/warp/flip_from_cur_to_prev.png)|<div align=center> ![](image/warp/flip_from_prev_to_cur.png)|<div align=center> ![](image/warp/flip_cur.png)|
+|<div align=center>resize|<div align=center>![](image/warp/resize_prev.png)|<div align=center> ![](image/warp/resize_from_cur_to_prev.png)|<div align=center> ![](image/warp/resize_from_prev_to_cur.png)|<div align=center> ![](image/warp/resize_cur.png)|
+|<div align=center>rotate|<div align=center>![](image/warp/rotate_prev.png)|<div align=center> ![](image/warp/rotate_from_cur_to_prev.png)|<div align=center> ![](image/warp/rotate_from_prev_to_cur.png)|<div align=center> ![](image/warp/rotate_cur.png)|
+|<div align=center>crop|<div align=center>![](image/warp/crop_prev.png)|<div align=center> ![](image/warp/crop_from_cur_to_prev.png)|<div align=center> ![](image/warp/crop_from_prev_to_cur.png)|<div align=center> ![](image/warp/crop_cur.png)|
+|<div align=center>label|<div align=center>![](image/label-warped/0000.png)|<div align=center> ![](image/label-warped/warp_from_cur_to_prev.png)|<div align=center> ![](image/label-warped/warp_from_prev_to_cur.png)|<div align=center> ![](image/label-warped/0001.png)|
+|<div align=center>label_flip|<div align=center>![](image/label-warped/flip_prev.png)|<div align=center> ![](image/label-warped/flip_from_cur_to_prev.png)|<div align=center> ![](image/label-warped/flip_from_prev_to_cur.png)|<div align=center> ![](image/label-warped/flip_cur.png)|
+|<div align=center>label_resize|<div align=center>![](image/label-warped/resize_prev.png)|<div align=center> ![](image/label-warped/resize_from_cur_to_prev.png)|<div align=center> ![](image/label-warped/resize_from_prev_to_cur.png)|<div align=center> ![](image/label-warped/resize_cur.png)|
+|<div align=center>label_rotate|<div align=center>![](image/label-warped/rotate_prev.png)|<div align=center> ![](image/label-warped/rotate_from_cur_to_prev.png)|<div align=center> ![](image/label-warped/rotate_from_prev_to_cur.png)|<div align=center> ![](image/label-warped/rotate_cur.png)|
+|<div align=center>label_crop|<div align=center>![](image/label-warped/crop_prev.png)|<div align=center> ![](image/label-warped/crop_from_cur_to_prev.png)|<div align=center> ![](image/label-warped/crop_from_prev_to_cur.png)|<div align=center> ![](image/label-warped/crop_cur.png)|
