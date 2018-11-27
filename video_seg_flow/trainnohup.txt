@@ -1,0 +1,23 @@
+nohup python3 trainval_video.py -r ckpt_v4.001.ckpt 2>&1 &
+
+python3 trainval_video.py -r ckpt_v5.1.ckpt
+
+495
+528
+557
+631  v1
+
+868
+926
+949
+973
+1041
+1058
+1092
+1328
+
+1345
+
+1640
+
+1935 SCREEN
