@@ -25,6 +25,13 @@
                     [Flownet2.0](http://www.cnblogs.com/jiujing23333/p/9386695.html)
                     [Liteflownet](https://github.com/twhui/LiteFlowNet)
                     [PWCnet](https://github.com/RanhaoKang/PWC-Net_pytorch)
+    
+    [传统方法](https://github.com/SpONA/temporal-loss-with-optical-flow/tree/master/get_flow) 使用语句
+
+        cd get_flow
+        ./makeOptFlow.sh /flow/path/%05d.png /save/path/ 0 1
+        或者  `python bash.py`
+        
 
     对比：
 
@@ -34,7 +41,7 @@
     |深度方法| <100ms |低  | 
 
 + 后处理:
-    计算结果为.flo文件，文件储存较大，可以用gzip和pickle进行压缩
+    计算结果为.flo文件，文件储存较大，可以用gzip和pickle进行[压缩](https://github.com/SpONA/temporal-loss-with-optical-flow/blob/master/utils/savepickle.py)
     [读光流](https://github.com/SpONA/temporal-loss-with-optical-flow/blob/master/utils/readflow.py)
     [光流可视化](https://github.com/SpONA/temporal-loss-with-optical-flow/blob/master/utils/visflow.py)
 
