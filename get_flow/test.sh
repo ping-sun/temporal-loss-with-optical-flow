@@ -1,0 +1,1 @@
+./makeOptFlow.sh 05/%05d.jpg 05/res/ 0 5
