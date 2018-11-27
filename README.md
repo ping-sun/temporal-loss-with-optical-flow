@@ -1,70 +1,16 @@
-###光流
+### 光流
 >基于光流的temporal loss增加视频分割的连续性
 
-#####1. [光流介绍](https://blog.csdn.net/qq_38906523/article/details/80781242)
+##### 1. [光流介绍](https://blog.csdn.net/qq_38906523/article/details/80781242)
 
 概念：它是空间运动物体在观察成像平面上的像素运动的瞬时速度，是利用图像序列中像素在时间域上的变化以及相邻帧之间的相关性来找到上一帧跟当前帧之间存在的对应关系，从而计算出相邻帧之间物体的运动信息的一种方法。
 
-<table>
-    <tr>
-        <td>
-            <center><font color=gray size=4>forward_(t-1)_t</font></center>
-        </td>
-        <td>
-            <center><font color=gray size=4>image</font></center>
-        </td>
-        <td>
-            <center><font color=gray size=4>backward_t_(t-1)</font></center>
-        </td>        
-    </tr>
-    <tr>
-        <td>
+| <div align=center>forward_(t-1)-t | <div align=center>image | <div align=center>backward_t-(t-1) |
+|-------|:---|-------:|
+| |<div align=center>![](image/org/0000.png){:width="80%"}|<div align=center> ![](image/flow-vis/backward_1_0.png){: width="80%"}|
+|<div align=center>![](image/flow-vis/forward_0_1.png){:width="80%"}|<div align=center>![](image/org/0001.png){:width="80%"}|<div align=center> ![](image/flow-vis/backward_2_1.png){: width="80%"}|
+|<div align=center>![](image/flow-vis/forward_1_2.png){:width="80%"} |<div align=center>![](image/org/0002.png){:width="80%"}| |    
 
-        </td>
-        <td>
-            <center>
-                <img src="https://raw.githubusercontent.com/SpONA/temporal-loss-with-optical-flow/master/image/org/0000.png" width=80% height=80% />
-            </center>
-        </td>
-        <td>
-            <center>
-                <img src="https://raw.githubusercontent.com/SpONA/temporal-loss-with-optical-flow/master/image/flow-vis/backward_1_0.png" width=80% height=80% />
-            </center>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <center>
-               <img src="https://raw.githubusercontent.com/SpONA/temporal-loss-with-optical-flow/master/image/flow-vis/forward_0_1.png" width=80% height=80% />
-            </center>
-        </td>
-        <td>
-            <center>
-                <img src="https://raw.githubusercontent.com/SpONA/temporal-loss-with-optical-flow/master/image/org/0001.png" width=80% height=80% />
-            </center>
-        </td>
-        <td>
-            <center>
-                <img src="https://raw.githubusercontent.com/SpONA/temporal-loss-with-optical-flow/master/image/flow-vis/backward_2_1.png" width=80% height=80% />
-            </center>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <center>
-               <img src="https://raw.githubusercontent.com/SpONA/temporal-loss-with-optical-flow/master/image/flow-vis/forward_1_2.png" width=80% height=80% /> 
-            </center>
-        </td>
-        <td>
-            <center>
-                <img src="https://raw.githubusercontent.com/SpONA/temporal-loss-with-optical-flow/master/image/org/0002.png" width=80% height=80% />
-            </center>
-        </td>
-    <td>
-
-    </td>
-</tr>
-</table>
 
 * 计算条件：
     1. 亮度恒定，就是同一点随着时间的变化，其亮度不会发生改变。这是基本光流法的假定（所有光流法变种都必须满足），用于得到光流法基本方程；
@@ -92,6 +38,9 @@
 
 
 #####2. warp函数
+[numpy](https://blog.csdn.net/sigai_csdn/article/details/80664481)
+[pytorch-cpu](https://blog.csdn.net/sigai_csdn/article/details/80664481)
+[pytorch-cuda](https://blog.csdn.net/sigai_csdn/article/details/80664481)
 
 核心思想：
     光流存储的是两张图之间的位移大小，利用`grid_new = grid_old + flow`计算原图中某个像素对应到新图中的坐标位置
@@ -156,271 +105,15 @@ numpy版本和pytorch版本代码位置：
     flow2 = flow2[crop_h:crop_h+crop_size, crop_w:crop_w+crop_size, :]
     ```
 
-<table>
-    <tr>
-        <td>
-        </td>
-        <td>
-            <center><font color=gray size=4>prev</font></center>
-        </td>
-        <td>
-            <center><font color=gray size=4>warp_prev</font></center>
-        </td>
-        <td>
-            <center><font color=gray size=4>warp_cur</font></center>
-        </td>      
-        <td>
-            <center><font color=gray size=4>cur</font></center>
-        </td>   
-    </tr>
-    <tr>
-        <td>
-            <center><font color=gray size=4>Origin</font></center>
-        </td>
-        <td>
-            <center>
-                <img src="https://raw.githubusercontent.com/SpONA/temporal-loss-with-optical-flow/master/image/org/0000.png" width=80% height=80% />
-            </center>
-        </td>
-        <td>
-            <center>
-                <img src="https://raw.githubusercontent.com/SpONA/temporal-loss-with-optical-flow/master/image/warp/warp_from_cur_to_prev.png" width=80% height=80% />
-            </center>
-        </td>
-        <td>
-            <center>
-                <img src="https://raw.githubusercontent.com/SpONA/temporal-loss-with-optical-flow/master/image/warp/warp_from_prev_to_cur.png" width=80% height=80% />
-            </center>
-        </td>
-        <td>
-            <center>
-                <img src="https://raw.githubusercontent.com/SpONA/temporal-loss-with-optical-flow/master/image/org/0001.png" width=80% height=80% />
-            </center>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <center><font color=gray size=4>flip</font></center>
-        </td>
-        <td>
-            <center>
-                <img src="https://raw.githubusercontent.com/SpONA/temporal-loss-with-optical-flow/master/image/warp/flip_prev.png" width=80% height=80% />
-            </center>
-        </td>
-        <td>
-            <center>
-                <img src="https://raw.githubusercontent.com/SpONA/temporal-loss-with-optical-flow/master/image/warp/flip_from_cur_to_prev.png" width=80% height=80% />
-            </center>
-        </td>
-        <td>
-            <center>
-                <img src="https://raw.githubusercontent.com/SpONA/temporal-loss-with-optical-flow/master/image/warp/flip_from_prev_to_cur.png" width=80% height=80% />
-            </center>
-        </td>
-        <td>
-            <center>
-                <img src="https://raw.githubusercontent.com/SpONA/temporal-loss-with-optical-flow/master/image/warp/flip_cur.png" width=80% height=80% />
-            </center>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <center><font color=gray size=4>resize</font></center>
-        </td>
-        <td>
-            <center>
-                <img src="https://raw.githubusercontent.com/SpONA/temporal-loss-with-optical-flow/master/image/warp/resize_prev.png" width=80% height=80% />
-            </center>
-        </td>
-        <td>
-            <center>
-                <img src="https://raw.githubusercontent.com/SpONA/temporal-loss-with-optical-flow/master/image/warp/resize_from_cur_to_prev.png" width=80% height=80% />
-            </center>
-        </td>
-        <td>
-            <center>
-                <img src="https://raw.githubusercontent.com/SpONA/temporal-loss-with-optical-flow/master/image/warp/resize_from_prev_to_cur.png" width=80% height=80% />
-            </center>
-        </td>
-        <td>
-            <center>
-                <img src="https://raw.githubusercontent.com/SpONA/temporal-loss-with-optical-flow/master/image/warp/resize_cur.png" width=80% height=80% />
-            </center>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <center><font color=gray size=4>rotate</font></center>
-        </td>
-        <td>
-            <center>
-                <img src="https://raw.githubusercontent.com/SpONA/temporal-loss-with-optical-flow/master/image/warp/rotate_prev.png" width=80% height=80% />
-            </center>
-        </td>
-        <td>
-            <center>
-                <img src="https://raw.githubusercontent.com/SpONA/temporal-loss-with-optical-flow/master/image/warp/rotate_from_cur_to_prev.png" width=80% height=80% />
-            </center>
-        </td>
-        <td>
-            <center>
-                <img src="https://raw.githubusercontent.com/SpONA/temporal-loss-with-optical-flow/master/image/warp/rotate_from_prev_to_cur.png" width=80% height=80% />
-            </center>
-        </td>
-        <td>
-            <center>
-                <img src="https://raw.githubusercontent.com/SpONA/temporal-loss-with-optical-flow/master/image/warp/rotate_cur.png" width=80% height=80% />
-            </center>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <center><font color=gray size=4>crop</font></center>
-        </td>
-        <td>
-            <center>
-                <img src="https://raw.githubusercontent.com/SpONA/temporal-loss-with-optical-flow/master/image/warp/crop_prev.png" width=80% height=80% />
-            </center>
-        </td>
-        <td>
-            <center>
-                <img src="https://raw.githubusercontent.com/SpONA/temporal-loss-with-optical-flow/master/image/warp/crop_from_cur_to_prev.png" width=80% height=80% />
-            </center>
-        </td>
-        <td>
-            <center>
-                <img src="https://raw.githubusercontent.com/SpONA/temporal-loss-with-optical-flow/master/image/warp/crop_from_prev_to_cur.png" width=80% height=80% />
-            </center>
-        </td>
-        <td>
-            <center>
-                <img src="https://raw.githubusercontent.com/SpONA/temporal-loss-with-optical-flow/master/image/warp/crop_cur.png" width=80% height=80% />
-            </center>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <center><font color=gray size=4>label</font></center>
-        </td>
-        <td>
-            <center>
-                <img src="https://raw.githubusercontent.com/SpONA/temporal-loss-with-optical-flow/master/image/label-warped/0000.png" width=80% height=80% />
-            </center>
-        </td>
-        <td>
-            <center>
-                <img src="https://raw.githubusercontent.com/SpONA/temporal-loss-with-optical-flow/master/image/label-warped/warp_from_cur_to_prev.png" width=80% height=80% />
-            </center>
-        </td>
-        <td>
-            <center>
-                <img src="https://raw.githubusercontent.com/SpONA/temporal-loss-with-optical-flow/master/image/label-warped/warp_from_prev_to_cur.png" width=80% height=80% />
-            </center>
-        </td>
-        <td>
-            <center>
-                <img src="https://raw.githubusercontent.com/SpONA/temporal-loss-with-optical-flow/master/image/label-warped/0001.png" width=80% height=80% />
-            </center>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <center><font color=gray size=4>label_flip</font></center>
-        </td>
-        <td>
-            <center>
-                <img src="https://raw.githubusercontent.com/SpONA/temporal-loss-with-optical-flow/master/image/label-warped/flip_prev.png" width=80% height=80% />
-            </center>
-        </td>
-        <td>
-            <center>
-                <img src="https://raw.githubusercontent.com/SpONA/temporal-loss-with-optical-flow/master/image/label-warped/flip_from_cur_to_prev.png" width=80% height=80% />
-            </center>
-        </td>
-        <td>
-            <center>
-                <img src="https://raw.githubusercontent.com/SpONA/temporal-loss-with-optical-flow/master/image/label-warped/flip_from_prev_to_cur.png" width=80% height=80% />
-            </center>
-        </td>
-        <td>
-            <center>
-                <img src="https://raw.githubusercontent.com/SpONA/temporal-loss-with-optical-flow/master/image/label-warped/flip_cur.png" width=80% height=80% />
-            </center>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <center><font color=gray size=4>label_resize</font></center>
-        </td>
-        <td>
-            <center>
-                <img src="https://raw.githubusercontent.com/SpONA/temporal-loss-with-optical-flow/master/image/label-warped/resize_prev_.png" width=80% height=80% />
-            </center>
-        </td>
-        <td>
-            <center>
-                <img src="https://raw.githubusercontent.com/SpONA/temporal-loss-with-optical-flow/master/image/label-warped/resize_from_cur_to_prev.png" width=80% height=80% />
-            </center>
-        </td>
-        <td>
-            <center>
-                <img src="https://raw.githubusercontent.com/SpONA/temporal-loss-with-optical-flow/master/image/label-warped/resize_from_prev_to_cur.png" width=80% height=80% />
-            </center>
-        </td>
-        <td>
-            <center>
-                <img src="https://raw.githubusercontent.com/SpONA/temporal-loss-with-optical-flow/master/image/label-warped/resize_cur_.png" width=80% height=80% />
-            </center>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <center><font color=gray size=4>label_rotate</font></center>
-        </td>
-        <td>
-            <center>
-                <img src="https://raw.githubusercontent.com/SpONA/temporal-loss-with-optical-flow/master/image/label-warped/rotate_prev.png" width=80% height=80% />
-            </center>
-        </td>
-        <td>
-            <center>
-                <img src="https://raw.githubusercontent.com/SpONA/temporal-loss-with-optical-flow/master/image/label-warped/rotate_from_cur_to_prev.png" width=80% height=80% />
-            </center>
-        </td>
-        <td>
-            <center>
-                <img src="https://raw.githubusercontent.com/SpONA/temporal-loss-with-optical-flow/master/image/label-warped/rotate_from_prev_to_cur.png" width=80% height=80% />
-            </center>
-        </td>
-        <td>
-            <center>
-                <img src="https://raw.githubusercontent.com/SpONA/temporal-loss-with-optical-flow/master/image/label-warped/rotate_cur.png" width=80% height=80% />
-            </center>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <center><font color=gray size=4>crop</font></center>
-        </td>
-        <td>
-            <center>
-                <img src="https://raw.githubusercontent.com/SpONA/temporal-loss-with-optical-flow/master/image/label-warped/crop_prev.png" width=80% height=80% />
-            </center>
-        </td>
-        <td>
-            <center>
-                <img src="https://raw.githubusercontent.com/SpONA/temporal-loss-with-optical-flow/master/image/label-warped/crop_from_cur_to_prev.png" width=80% height=80% />
-            </center>
-        </td>
-        <td>
-            <center>
-                <img src="https://raw.githubusercontent.com/SpONA/temporal-loss-with-optical-flow/master/image/label-warped/crop_from_prev_to_cur.png" width=80% height=80% />
-            </center>
-        </td>
-        <td>
-            <center>
-                <img src="https://raw.githubusercontent.com/SpONA/temporal-loss-with-optical-flow/master/image/label-warped/crop_cur.png" width=80% height=80% />
-            </center>
-        </td>
-    </tr>
-</table>
+| |<div align=center>prev | <div align=center>warp_prev | <div align=center>warp_cur |<div align=center>cur |
+|---|:----:|:---:|:---:|-------:|
+|<div align=center>origin|<div align=center>![](image/org/0000.png){:width="80%"}|<div align=center> ![](image/warp/warp_from_cur_to_prev.png){: width="80%"}|<div align=center> ![](image/warp/warp_from_prev_to_cur.png){: width="80%"}|<div align=center> ![](image/org/0001.png){: width="80%"}|
+|<div align=center>flip|<div align=center>![](image/warp/flip_prev.png){:width="80%"}|<div align=center> ![](image/warp/flip_from_cur_to_prev.png){: width="80%"}|<div align=center> ![](image/warp/flip_from_prev_to_cur.png){: width="80%"}|<div align=center> ![](image/warp/flip_cur.png){: width="80%"}|
+|<div align=center>resize|<div align=center>![](image/warp/resize_prev.png){:width="80%"}|<div align=center> ![](image/warp/resize_from_cur_to_prev.png){: width="80%"}|<div align=center> ![](image/warp/resize_from_prev_to_cur.png){: width="80%"}|<div align=center> ![](image/warp/resize_cur.png){: width="80%"}|
+|<div align=center>rotate|<div align=center>![](image/warp/rotate_prev.png){:width="80%"}|<div align=center> ![](image/warp/rotate_from_cur_to_prev.png){: width="80%"}|<div align=center> ![](image/warp/rotate_from_prev_to_cur.png){: width="80%"}|<div align=center> ![](image/warp/rotate_cur.png){: width="80%"}|
+|<div align=center>crop|<div align=center>![](image/warp/crop_prev.png){:width="80%"}|<div align=center> ![](image/warp/crop_from_cur_to_prev.png){: width="80%"}|<div align=center> ![](image/warp/crop_from_prev_to_cur.png){: width="80%"}|<div align=center> ![](image/warp/crop_cur.png){: width="80%"}|
+|<div align=center>label|<div align=center>![](image/label-warped/0000.png){:width="80%"}|<div align=center> ![](image/label-warped/warp_from_cur_to_prev.png){: width="80%"}|<div align=center> ![](image/label-warped/warp_from_prev_to_cur.png){: width="80%"}|<div align=center> ![](image/label-warped/0001.png){: width="80%"}|
+|<div align=center>label_flip|<div align=center>![](image/label-warped/flip_prev.png){:width="80%"}|<div align=center> ![](image/label-warped/flip_from_cur_to_prev.png){: width="80%"}|<div align=center> ![](image/label-warped/flip_from_prev_to_cur.png){: width="80%"}|<div align=center> ![](image/label-warped/flip_cur.png){: width="80%"}|
+|<div align=center>label_resize|<div align=center>![](image/label-warped/resize_prev_.png){:width="80%"}|<div align=center> ![](image/label-warped/resize_from_cur_to_prev.png){: width="80%"}|<div align=center> ![](image/label-warped/resize_from_prev_to_cur.png){: width="80%"}|<div align=center> ![](image/label-warped/resize_cur_.png){: width="80%"}|
+|<div align=center>label_rotate|<div align=center>![](image/label-warped/rotate_prev.png){:width="80%"}|<div align=center> ![](image/label-warped/rotate_from_cur_to_prev.png){: width="80%"}|<div align=center> ![](image/label-warped/rotate_from_prev_to_cur.png){: width="80%"}|<div align=center> ![](image/label-warped/rotate_cur.png){: width="80%"}|
+|<div align=center>label_crop|<div align=center>![](image/label-warped/crop_prev.png){:width="80%"}|<div align=center> ![](image/label-warped/crop_from_cur_to_prev.png){: width="80%"}|<div align=center> ![](image/label-warped/crop_from_prev_to_cur.png){: width="80%"}|<div align=center> ![](image/label-warped/crop_cur.png){: width="80%"}|
