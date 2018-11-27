@@ -7,9 +7,9 @@
 
 | <div align=center>forward_(t-1)-t | <div align=center>image | <div align=center>backward_t-(t-1) |
 |-------|:---|-------:|
-| |<div align=center>![](image/org/0000.png)|<div align=center> ![](image/flow-vis/backward_1_0.png)|
-|<div align=center>![](image/flow-vis/forward_0_1.png)|<div align=center>![](image/org/0001.png)|<div align=center> ![](image/flow-vis/backward_2_1.png)|
-|<div align=center>![](image/flow-vis/forward_1_2.png)|<div align=center>![](image/org/0002.png)| |    
+| |<div align=center>![](image/org/0000.png)0000.png|<div align=center> ![](image/flow-vis/backward_1_0.png)backward_1_0.png|
+|<div align=center>![](image/flow-vis/forward_0_1.png)forward_0_1.png|<div align=center>![](image/org/0001.png)0001.png|<div align=center> ![](image/flow-vis/backward_2_1.png)backward_2_1.png|
+|<div align=center>![](image/flow-vis/forward_1_2.png)forward_1_2.png|<div align=center>![](image/org/0002.png)0002.png| |    
 
 
 * 计算条件：
@@ -39,7 +39,9 @@
 
 ##### 2. warp函数
 [numpy](https://github.com/SpONA/temporal-loss-with-optical-flow/blob/master/utils/warp_numpy.py)
-[pytorch-cpu](https://github.com/SpONA/temporal-loss-with-optical-flow/blob/master/utils/warp_torch_cpu.py）
+
+[pytorch-cpu](https://github.com/SpONA/temporal-loss-with-optical-flow/blob/master/utils/warp_torch_cpu.py)
+
 [pytorch-cuda](https://github.com/SpONA/temporal-loss-with-optical-flow/blob/master/utils/warp_torch_cuda.py)
 
 核心思想：
