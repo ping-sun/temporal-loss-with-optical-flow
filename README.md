@@ -70,7 +70,7 @@
 
 
 #### 3. 光流的数据增强
-[代码](https://github.com/SpONA/temporal-loss-with-optical-flow/blob/master/video_seg_flow/dataloader/video_generator.py)
+[代码](https://github.com/SpONA/temporal-loss-with-optical-flow/blob/master/video_seg_flow/dataloader/video_generator.py#L95)
 
 - **resize**:
     
