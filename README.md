@@ -1,5 +1,5 @@
 ### 光流
->基于光流的temporal loss增加视频分割的连续性
+>基于光流warp的temporal loss增加视频分割的连续性
 
 ##### 1. [光流介绍](https://blog.csdn.net/qq_38906523/article/details/80781242)
 
@@ -21,7 +21,7 @@
 
 + 计算：包含传统与深度学习的方法
 
-    深度学习方法包含[Flownet](https://blog.csdn.net/sigai_csdn/article/details/80664481)
+    深度学习方法包含: [Flownet](https://blog.csdn.net/sigai_csdn/article/details/80664481)
                     [Flownet2.0](http://www.cnblogs.com/jiujing23333/p/9386695.html)
                     [Liteflownet](https://github.com/twhui/LiteFlowNet)
                     [PWCnet](https://github.com/RanhaoKang/PWC-Net_pytorch)
@@ -33,8 +33,10 @@
     |传统方法| 30s    | 高 |
     |深度方法| <100ms |低  | 
 
-+ 后处理
-    计算结果为.flo文件，文件储存较大，可以用pickle进行压缩
++ 后处理:
+    计算结果为.flo文件，文件储存较大，可以用gzip和pickle进行压缩
+    [读光流](https://github.com/SpONA/temporal-loss-with-optical-flow/blob/master/utils/readflow.py)
+    [光流可视化](https://github.com/SpONA/temporal-loss-with-optical-flow/blob/master/utils/visflow.py)
 
 
 ##### 2. warp函数
@@ -49,15 +51,15 @@
 
 输入： `flow1, flow2, prev`
 
-    + flow1表示 prev到cur的正向光流 shape = (H, W, 2)
++ flow1表示 prev到cur的正向光流 shape = (H, W, 2)
 
-    + flow2表示 cur到prev的反向光流 shape = (H, W, 2) 
++ flow2表示 cur到prev的反向光流 shape = (H, W, 2) 
 
-    + prev表示前一帧图片 shape = (H, W, 3) (3表示RGB三个channel, 其实这里channel数为任意n可以，warp函数中对每一个channel都做warp, 输出的结果shape与输入一致)
++ prev表示前一帧图片 shape = (H, W, 3) (3表示RGB三个channel, 其实这里channel数为任意n可以，warp函数中对每一个channel都做warp, 输出的结果shape与输入一致)
 
-函数`getwarp(flow1, flow2, prev)`的输出即为`warp_cur `
+函数`warp(flow1, flow2, prev)`的输出即为`warp_cur `
 
-也可以反过来做，即`getwarp(flow2, flow1, cur)`的输出是`warp_prev`
+也可以反过来做，即`warp(flow2, flow1, cur)`的输出是`warp_prev`
 
 
 ##### 3. 光流的augmentation
