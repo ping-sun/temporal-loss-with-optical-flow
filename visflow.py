@@ -1,4 +1,7 @@
 import numpy as np
+import os
+import glob
+import imageio
 
 __all__ = ['load_flow', 'save_flow', 'vis_flow']
 
@@ -148,40 +151,9 @@ def vis_flow(flow):
 	img = computeColor(u, v)
 	return img[:,:,[2,1,0]]
 
-# if __name__ == '__main__':
-# 	parser = argparse.ArgumentParser()
-# 	parser.add_argument(
-# 	  '--flowfile',
-# 	  type=str,
-# 	  default='colorTest.flo',
-# 	  help='Flow file'
-# 	)
-# 	parser.add_argument(
-# 	  '--write',
-# 	  type=bool,
-# 	  default=False,
-# 	  help='write flow as png'
-# 	)
-# 	file = parser.parse_args().flowfile
-# 	flow = load_flow(file)
-# 	img = computeImg(flow)	
-# 	cv2.imshow(file, img)
-# 	k = cv2.waitKey()
-# 	if parser.parse_args().write:
-# 		cv2.imwrite(file[:-4]+'.png', img)
-import imageio
-if __name__ == '__main__':
-	import matplotlib.pyplot as plt
-	'''
-	for i in range(5):
-		n = str(i).rjust(5,'0')
-		fn = n+'.flo'
-		sn = n+'.png'
-		print(fn)
-		flow = load_flow(fn)
-		img = vis_flow(flow)
-		imageio.imsave(sn, img)
-	'''
-	flow = load_flow('backward_5_0.flo')
+
+for flo in glob.glob(os.path.join('image','flow','*.flo')):
+	name = flo.split('.')[0]
+	flow = load_flow(flo)
 	img = vis_flow(flow)
-	imageio.imsave('backward_5_0.png', img)
+	imageio.imsave(name+'.png', img)
