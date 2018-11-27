@@ -1,7 +1,7 @@
 ### 光流
 >基于光流warp的temporal loss增加视频分割的连续性
 
-##### 1. [光流介绍](https://blog.csdn.net/qq_38906523/article/details/80781242)
+#### 1. [光流介绍](https://blog.csdn.net/qq_38906523/article/details/80781242)
 
 概念：它是空间运动物体在观察成像平面上的像素运动的瞬时速度，是利用图像序列中像素在时间域上的变化以及相邻帧之间的相关性来找到上一帧跟当前帧之间存在的对应关系，从而计算出相邻帧之间物体的运动信息的一种方法。
 
@@ -46,7 +46,7 @@
     [光流可视化](https://github.com/SpONA/temporal-loss-with-optical-flow/blob/master/utils/visflow.py)
 
 
-##### 2. warp函数
+#### 2. warp函数
 [numpy](https://github.com/SpONA/temporal-loss-with-optical-flow/blob/master/utils/warp_numpy.py)
 
 [pytorch-cpu](https://github.com/SpONA/temporal-loss-with-optical-flow/blob/master/utils/warp_torch_cpu.py)
@@ -69,7 +69,8 @@
 也可以反过来做，即`warp(flow2, flow1, cur)`的输出是`warp_prev`
 
 
-##### 3. 光流的augmentation
+#### 3. 光流的数据增强
+[代码](https://github.com/SpONA/temporal-loss-with-optical-flow/blob/master/video_seg_flow/dataloader/video_generator.py)
 
 - **resize**:
     
